@@ -6,6 +6,9 @@ export class Pharmacy{
 
     @PrimaryGeneratedColumn()
     id: number;
+
+    @Column({ type: "varchar", width: 150, nullable: false  })
+    name_pharmacy: string;
     
     @Column({ type: "varchar", width: 100, nullable: false  })
     address: string;
