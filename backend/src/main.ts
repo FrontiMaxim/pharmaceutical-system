@@ -1,5 +1,6 @@
 import express, {Express, json, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import helmet from 'helmet';
 
 
 import { AppDataSource } from './data-source';
@@ -22,6 +23,7 @@ const medicamentServices: MedicamentServices = new MedicamentServices();
 const availabilityServices: AvailabilitytServices = new AvailabilitytServices();
 
 server.use(json());
+server.use(helmet());
 
 // PHARMACY CRUD
 
