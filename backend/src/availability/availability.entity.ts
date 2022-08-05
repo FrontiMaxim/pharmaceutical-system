@@ -8,6 +8,9 @@ export class Availability{
     @PrimaryGeneratedColumn()
     id: number;
     
+    @Column({ type: "varchar", width: 30, nullable: false })
+    name_medicament: string;
+
     @Column({ type: "bigint", nullable: false  })
     amount: number;
 
