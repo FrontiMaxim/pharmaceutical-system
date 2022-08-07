@@ -15,7 +15,7 @@ export class MedicamentServices {
 
     async getMedicament(id: number): Promise<Medicament> {
 
-        const data: Medicament | null= await  medicamentRepository.findOneBy({id: id});
+        const data: Medicament | null= await  medicamentRepository.findOne({where: {id: id}, relations : ['avaiabilites']});
         
         if(data) {
             return data;

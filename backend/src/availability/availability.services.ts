@@ -14,7 +14,7 @@ export class AvailabilitytServices {
 
     async getAvailability(id: number): Promise<Availability> {
 
-        const data: Availability | null= await  availabilityRepository.findOneBy({id: id});
+        const data: Availability | null= await  availabilityRepository.findOne({where: {id: id}, relations : ['medicament', 'pharmacy']});
         
         if(data) {
             return data;

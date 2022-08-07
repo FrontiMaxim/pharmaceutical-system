@@ -7,9 +7,6 @@ export class Availability{
 
     @PrimaryGeneratedColumn()
     id: number;
-    
-    @Column({ type: "varchar", width: 30, nullable: false })
-    name_medicament: string;
 
     @Column({ type: "bigint", nullable: false  })
     amount: number;
@@ -20,9 +17,9 @@ export class Availability{
     @Column({ type: "date", nullable: false })
     date_arrival: Date;
 
-    @ManyToOne(() => Medicament, (medicament) => medicament.avaiabilites)
+    @ManyToOne(() => Medicament, (medicament) => medicament.avaiabilites, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
     medicament: Medicament;
 
-    @ManyToOne(() => Pharmacy, (pharmacy) => pharmacy.avaiabilites)
+    @ManyToOne(() => Pharmacy, (pharmacy) => pharmacy.avaiabilites, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
     pharmacy: Pharmacy;
 }
