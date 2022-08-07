@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm"
-import { Availability } from "../availability/availability.entity";
+import { Medicament } from "../medicament/medicament.entity";
 
 @Entity()
 export class Pharmacy{
@@ -22,6 +22,6 @@ export class Pharmacy{
     @Column({ type: "time", nullable: false  })
     end_work: Date;
 
-    @OneToMany(() => Availability, (availability) => availability.pharmacy)
-    avaiabilites: Availability[];
+    @OneToMany(() => Medicament, (medicament) => medicament.pharmacie)
+    medicaments:  Medicament[];
 }

@@ -1,18 +1,35 @@
-import React from 'react';
+import axios from 'axios';
 
-import { IAvailability } from '../../interfaces/IAvailability';
-import { IMedicament } from '../../interfaces/IMedicament';
-import { IPharmacy } from '../../interfaces/IPharmacy';
+import { IPropItemTable } from '../../interfaces/IPropItemTable';
+import { urls } from '../../data/urls';
+import { useAppDispatch } from '../../hooks/redux';
+import { tableSlice } from '../../store/reducers/TableSlice';
 
-interface IPropItemTable {
-  data:  IPharmacy | IAvailability | IMedicament
-}
 
 function ItemTable(prop: IPropItemTable) {
+
+  const {update} = tableSlice.actions;
+  const dispatch = useAppDispatch();
+
+  function getAvailability() {
+    axios.get(urls.PATH_PHARMACY, {
+      params: {
+        id: prop.id
+      }
+    }).then(response => {
+      console.log(response.data.medicaments)
+      dispatch(update({
+        data: response.data.medicaments,
+        caption: 'Ассортимент'
+      }))
+    })
+  }
+
+
   return (
-    <tr className='hover:bg-green-300 hover:cursor-pointer'>
+    <tr className='hover:bg-green-300 hover:cursor-pointer' onClick={getAvailability}>
       {
-        Object.values(prop.data).map((item, idx) => idx !== 0 ? 
+        Object.values(prop.row).map((item, idx) => idx !== 0 ? 
         <td className='border px-3'>{item}</td> : '')
       }
     </tr>

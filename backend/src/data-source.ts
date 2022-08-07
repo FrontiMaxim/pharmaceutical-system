@@ -1,5 +1,4 @@
 import { DataSource } from "typeorm";
-import { Availability } from "./availability/availability.entity";
 import { Medicament } from "./medicament/medicament.entity";
 import { Pharmacy } from "./pharmacy/pharmacy.entity";
 
@@ -12,7 +11,7 @@ export const AppDataSource = new DataSource ({
     database: "pharmaceutical_system",
     synchronize: true,
     logging: true,
-    entities: [Medicament, Availability, Pharmacy],
+    entities: [Medicament, Pharmacy],
     subscribers: [],
     migrations: [],
 });

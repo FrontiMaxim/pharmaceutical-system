@@ -1,4 +1,5 @@
-import { IAvailability } from "./IAvailability";
+import { IMedicament } from "./IMedicament";
+
 
 export interface IPharmacy {
     id: number;
@@ -7,6 +8,6 @@ export interface IPharmacy {
     phone: number;
     start_work: Date;
     end_work: Date;
-    avaiabilites: IAvailability[];
+    medicaments:  IMedicament[];
 }
 

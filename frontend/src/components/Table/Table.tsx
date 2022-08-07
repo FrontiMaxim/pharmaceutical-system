@@ -1,42 +1,50 @@
-import React, { useEffect, useState } from 'react'
+import React, {useContext, useEffect, useState } from 'react'
+import axios from 'axios';
 
-import { IAvailability } from '../../interfaces/IAvailability'
-import { IMedicament } from '../../interfaces/IMedicament'
-import { IPharmacy } from '../../interfaces/IPharmacy'
 import ItemTable from '../ItemTable/ItemTable'
 import {urls} from '../../data/urls'
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { tableSlice } from '../../store/reducers/TableSlice';
 
 const headers: {[key: string]: string[]} = {
   'Аптеки' : ['Название', 'Адрес', 'Телефон', 'Начало рабочего дня', 'Конец рабочего дня'],
-  'Медикаменты': ['Название', 'Вес', 'Дозировка', 'Срок годности'],
-  'Ассортимент': ['Название медикамента', 'Количество на складе', 'Цена', 'Дата поступления']
+  'Ассортимент': ['Название', 'Вес', 'Дозировка', 'Срок годности','Количество на складе', 'Цена', 'Дата поступления']
 }
 
 function Table() {
 
-  const [dataTable, setDataTable] = useState<IPharmacy[] | IAvailability[] | IMedicament[]>([]);
-  const [caption, setCaption] = useState<string>('');
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const {data, caption} = useAppSelector(state => state.tableReducer)
+  const {update} = tableSlice.actions;
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    fetch(urls.PATH_PHARMACY)
-    .then(response => response.json())
-    .then(data => 
-      {
-        data = data as IPharmacy;
-        setDataTable(data);
-        setCaption('Аптеки');
-      }
-    ).catch(err => console.log(err))
+    axios.get(urls.PATH_PHARMACY)
+      .then(response => {
+        dispatch(update({
+          data: response.data,
+          caption: 'Аптеки'
+        }))
+        setIsError(false);
+      })
+      .catch(err => {
+        console.log(err);
+        setIsError(true);
+      })
+      .finally(() => setIsLoading(false))
   }, []);
+
 
   return (
     <>
     {
-      dataTable.length === 0 ? 
+      isLoading ? 
       <div>
         Идёт загрузка данных...
       </div>
-      :
+      : !isError &&
       <table className='border-collapse border mt-4'>
           <caption>{ caption }</caption>
           <thead>
@@ -46,12 +54,15 @@ function Table() {
                 }
             </tr>
           </thead>
-          <tbody>
+          <tbody >
             {
-              dataTable.map(item => <ItemTable key={item.id} data={item}/>)
+              data.map(item => <ItemTable key={item.id} id={item.id} row={item}/>)
             }
           </tbody>
       </table>
+    }
+    {
+      isError && <div>Запрос выполнен неудачно!</div>
     }
     </>
   )

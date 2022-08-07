@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm"
-import { Availability } from "../availability/availability.entity";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, ManyToOne } from "typeorm"
+import { Pharmacy } from "../pharmacy/pharmacy.entity";
 
 @Entity()
 export class Medicament {
@@ -11,7 +11,7 @@ export class Medicament {
     name_medicament: string;
 
     @Column({ type: "int8", nullable: false  })
-    amount: number;
+    weight: number;
 
     @Column({ type: "int8", nullable: false  })
     dosage: number;
@@ -19,6 +19,15 @@ export class Medicament {
     @Column({ type: "int8", nullable: false  })
     expiration_date: number;
 
-    @OneToMany(() => Availability, (availability) => availability.medicament)
-    avaiabilites: Availability[];
+    @Column({ type: "int8", nullable: false  })
+    amount: number;
+
+    @Column({ type: "int8", nullable: false  })
+    price: number;
+
+    @Column({ type: "date", nullable: false  })
+    date_arrival: Date
+
+    @ManyToOne(() => Pharmacy, (pharmacy) => pharmacy.medicaments, {cascade: true})
+    pharmacie: Pharmacy;
 }

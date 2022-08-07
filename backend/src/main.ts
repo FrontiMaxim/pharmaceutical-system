@@ -8,19 +8,15 @@ import { PharmacyServices } from './pharmacy/pharmacy.services';
 import { Pharmacy } from './pharmacy/pharmacy.entity';
 import { MedicamentServices } from './medicament/medicament.services';
 import { Medicament } from './medicament/medicament.entity';
-import { AvailabilitytServices } from './availability/availability.services';
-import { Availability } from './availability/availability.entity';
 
 const server: Express = express();
 const PORT = 8080;
 
 const PATH_PHARMACY: string = '/pharmacy';
 const PATH_MEDICAMENT: string = '/medicament';
-const PATH_AVAILABILITY: string = '/availability';
 
 const pharmacyServices: PharmacyServices = new PharmacyServices();
 const medicamentServices: MedicamentServices = new MedicamentServices();
-const availabilityServices: AvailabilitytServices = new AvailabilitytServices();
 
 server.use(json());
 server.use(helmet());
@@ -119,59 +115,6 @@ server.put(PATH_MEDICAMENT, (req: Request, res: Response) => {
         .catch(() => res.status(StatusCodes.BAD_REQUEST).send());
 
 });
-
-
-// AVAILABILITY CRUD
-
-server.get(PATH_AVAILABILITY, (req: Request, res: Response) => {
-
-    if(req.query.id) {
-        const id: number = Number(req.query.id);
-
-        availabilityServices.getAvailability(id)
-            .then(data => res.status(StatusCodes.OK).send(data))
-            .catch(() => res.status(StatusCodes.NOT_FOUND).send());
-    } else {
-        availabilityServices.getAllAvailabilities()
-            .then(data => res.status(StatusCodes.OK).send(data))
-    }
-});
-
-
-server.post(PATH_AVAILABILITY, (req: Request, res: Response) => {
-
-    const newAvailability: Availability = req.body as Availability;
-
-    availabilityServices.createAvailability(newAvailability)
-        .then(() => res.status(StatusCodes.CREATED).send())
-        .catch(() =>  res.status(StatusCodes.BAD_REQUEST).send());
-});
-
-
-server.delete(PATH_AVAILABILITY, (req: Request, res: Response) => {
-
-    const id: number = Number(req.query.id);
-
-    availabilityServices.removeAvailability(id)
-        .then(() => res.status(StatusCodes.OK).send())
-        .catch(() => res.status(StatusCodes.BAD_REQUEST).send());
-});
-
-
-server.put(PATH_AVAILABILITY, (req: Request, res: Response) => {
-    const id: number = Number(req.query.id);
-    const newAvailability: Availability = req.body as Availability;
-
-    availabilityServices.updateAvailability(id, newAvailability)
-        .then(() =>  res.status(StatusCodes.OK).send())
-        .catch(() => res.status(StatusCodes.BAD_REQUEST).send());
-
-});
-
-
-server.get('/', (req: Request, res: Response) => {
-  res.send("Привет!");
-})
 
 
 AppDataSource.initialize()

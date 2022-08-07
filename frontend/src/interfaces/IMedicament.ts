@@ -1,10 +1,14 @@
-import { IAvailability } from "./IAvailability";
+import { IPharmacy } from "./IPharmacy";
+
 
 export interface IMedicament {
     id: number;
     name_medicament: string;
-    amount: number;
+    weight: number;
     dosage: number;
     expiration_date: number;
-    avaiabilites: IAvailability[];
+    amount: number;
+    price: number;
+    date_arrival: Date
+    pharmacies: IPharmacy[];
 }
